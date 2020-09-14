@@ -1,9 +1,15 @@
 package Routes
 
-import "github.com/gin-gonic/gin"
+import (
+	Helpers "../../Domain/Helpers"
+	Controllers "../Controllers"
+	"github.com/gin-gonic/gin"
+)
 
 type PriceRoute struct {
-	baseuri string
+	baseuri          string
+	priceController  *Controllers.PriceController
+	handleController *Helpers.HandleController
 }
 
 func (priceRoute *PriceRoute) Handle(engine *gin.Engine) {
@@ -11,15 +17,13 @@ func (priceRoute *PriceRoute) Handle(engine *gin.Engine) {
 }
 
 func (priceRoute *PriceRoute) get(engine *gin.Engine) {
-	engine.GET(priceRoute.baseuri, func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	engine.GET(priceRoute.baseuri, priceRoute.handleController.Call(priceRoute.priceController.Get))
 }
 
-func NewPriceRoute() *PriceRoute {
+func NewPriceRoute(priceController *Controllers.PriceController, handleController *Helpers.HandleController) *PriceRoute {
 	return &PriceRoute{
-		baseuri: "/price",
+		baseuri:          "/price",
+		priceController:  priceController,
+		handleController: handleController,
 	}
 }
