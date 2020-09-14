@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"os"
 
@@ -18,13 +17,12 @@ var (
 func main() {
 	flags.Parse(os.Args[1:])
 	args := flags.Args()
-	fmt.Println(args)
 
 	if len(args) < 1 {
 		flags.Usage()
 		return
 	}
-
+	_, command := args[1], args[1]
 	db, err := goose.OpenDBWithDriver("mysql", "root:123@/hostgator")
 	if err != nil {
 		log.Fatalf("goose: failed to open DB: %v\n", err)
@@ -36,11 +34,9 @@ func main() {
 		}
 	}()
 
-	command := args[1]
-
 	arguments := []string{}
 	if len(args) > 3 {
-		arguments = append(arguments, args[3:]...)
+		arguments = append(arguments, args[2:]...)
 	}
 
 	if err := goose.Run(command, db, *dir, arguments...); err != nil {
