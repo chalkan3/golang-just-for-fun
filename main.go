@@ -5,6 +5,7 @@ import (
 	Routes "./Aplications/Routes"
 	Entity "./Domain/Entities"
 	Helpers "./Domain/Helpers"
+	Querys "./Domain/Querys"
 	Services "./Domain/Services"
 	Infra "./Infrastructure"
 	Database "./Infrastructure/Database"
@@ -32,9 +33,13 @@ func buildContainer() *dig.Container {
 	return container
 }
 
+func buildQueryProvider(container *dig.Container) {
+	container.Provide(Querys.PriceQuery)
+}
 func buildHelpersProvider(container *dig.Container) {
 	container.Provide(Helpers.NewHandleController)
 }
+
 func buildEntityProvider(container *dig.Container) {
 	container.Provide(Entity.NewRoutesConfig)
 	container.Provide(Entity.NewServerConfig)
